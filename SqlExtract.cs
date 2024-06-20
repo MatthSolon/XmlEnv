@@ -7,17 +7,17 @@ using System.IO.Compression;
 using System.Text;
 using System.Collections.Generic;
 using XmlEnv;
+using System.Linq;
 
 namespace ExportarConsultaParaTxt
 {
     class SqlExtract
     {
 
-        public static void SqlExtrair(List<string> args = null)
+        public static List<XML> SqlExtrair(List<string> args = null)
         {
             string connectionString = "Server=SUPORTE-06\\SQL2022;Database=PDV1;User ID=Sa;Password=IzzyWay1234";
             string xmlconsulta = "SELECT XMLDocumentoAutorizado, Chave FROM Fiscal.Documento WHERE Inclusao BETWEEN '20240101' AND '20240131'";
-            // string xmlchave = "SELECT Chave FROM Fiscal.Documento WHERE Inclusao BETWEEN '20240101' AND '20240131'";
 
             List<XML> XmlCont = new List<XML>();
             XML XmlConteudo = new XML();
@@ -37,14 +37,25 @@ namespace ExportarConsultaParaTxt
 
                 XmlCont.Add(Xml);
             }
-        }/*
-        string startPath = @".\start";
-        string zipPath = @".\result.zip";
-        string extractPath = @".\extract";
+            return XmlCont;
+        }
+        public static void ArquivoCriar(List<XML> xml)
+        {
+            foreach (XML xmlCont in xml)
+            {
+                var chaveArquivo = xml.ToList();
 
-        ZipFile.CreateFromDirectory(startPath, zipPath);
+                string nomeArquivo = $@"C:\IZZYWAY\teste\{chaveArquivo} .txt";
 
-        ZipFile.ExtractToDirectory(zipPath, extractPath);
-        */
+                using (StreamWriter writer = new StreamWriter(nomeArquivo, true))
+                {
+                    foreach (var registro in xml)
+                        writer.WriteLine($"{registro.Conteudo}");
+                }
+
+            }
+        }
+
+
     }
 }

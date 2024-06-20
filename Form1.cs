@@ -21,6 +21,7 @@ namespace XmlEnv
         private void button1_Click(object sender, EventArgs e)
         {
             SqlExtract.SqlExtrair();
+            SqlExtract.ArquivoCriar(SqlExtract.SqlExtrair());
         }
     }
 }
