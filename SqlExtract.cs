@@ -5,53 +5,39 @@ using System.IO;
 using System.Windows.Forms;
 using System.IO.Compression;
 using System.Text;
+using System.Collections.Generic;
+using XmlEnv;
 
 namespace ExportarConsultaParaTxt
 {
-    class sqlExtract
+    class SqlExtract
     {
-        static void sqlExtrair(string[] args)
+
+        public static void SqlExtrair(List<string> args = null)
         {
-            string connectionString = "";
-            string xmlconteudo = "SELECT XMLDocumentoAutorizado FROM Fiscal.Documento WHERE Inclusao BETWEEN '20240101' AND '20240131'";
-            string xmlchave = "SELECT Chave FROM Fiscal.Documento WHERE Inclusao BETWEEN '20240101' AND '20240131'";
-            //fazer uma lista e fazer um for each para percorrer a lista e enviar !
-            try
+            string connectionString = "Server=SUPORTE-06\\SQL2022;Database=PDV1;User ID=Sa;Password=IzzyWay1234";
+            string xmlconsulta = "SELECT XMLDocumentoAutorizado, Chave FROM Fiscal.Documento WHERE Inclusao BETWEEN '20240101' AND '20240131'";
+            // string xmlchave = "SELECT Chave FROM Fiscal.Documento WHERE Inclusao BETWEEN '20240101' AND '20240131'";
+
+            List<XML> XmlCont = new List<XML>();
+            XML XmlConteudo = new XML();
+            SqlConnection connection = new SqlConnection(connectionString);
+            connection.Open();
+
+            SqlDataReader reader;
+
+            SqlCommand cmd = new SqlCommand(xmlconsulta, connection);
+            cmd.CommandType = System.Data.CommandType.Text;
+            reader = cmd.ExecuteReader();
+            while (reader.Read())
             {
-                using (SqlConnection connection = new SqlConnection(connectionString))
-                {
-                    connection.Open();
+                XML Xml = new XML();
+                Xml.Conteudo = (string)reader["XMLDocumentoAutorizado"] ?? "";
+                Xml.Chave = (string)reader["Chave"] ?? "";
 
-                    using (SqlCommand command = new SqlCommand(xmlconteudo, connection))
-                    {
-                        using (SqlDataReader reader = command.ExecuteReader())
-                        {
-                            // Caminho para o arquivo de saída
-                            string caminhoArquivo = $@"C:\IzzyWay\{xmlchave}.txt";
-
-                            using (StreamWriter writer = new StreamWriter(caminhoArquivo))
-                            {
-                                while (reader.Read())
-                                {
-                                    // Escreva os resultados no arquivo
-                                    for (int i = 0; i < reader.FieldCount; i++)
-                                    {
-                                        writer.Write(reader[i].ToString() + "\t"); 
-                                    }
-                                    writer.WriteLine(); 
-                                }
-                            }
-
-                            Console.WriteLine("Consulta exportada com sucesso para " + caminhoArquivo);
-                        }
-                    }
-                }
+                XmlCont.Add(Xml);
             }
-            catch (Exception ex)
-            {
-                Console.WriteLine("Erro: " + ex.Message);
-            }
-        }
+        }/*
         string startPath = @".\start";
         string zipPath = @".\result.zip";
         string extractPath = @".\extract";
@@ -59,6 +45,6 @@ namespace ExportarConsultaParaTxt
         ZipFile.CreateFromDirectory(startPath, zipPath);
 
         ZipFile.ExtractToDirectory(zipPath, extractPath);
-
+        */
     }
 }
