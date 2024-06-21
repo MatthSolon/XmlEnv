@@ -16,7 +16,8 @@ namespace ExportarConsultaParaTxt
 
         public static List<XML> SqlExtrair(List<string> args = null)
         {
-            string connectionString = "Server=SUPORTE-06\\SQL2022;Database=PDV1;User ID=Sa;Password=IzzyWay1234";
+            //string connectionString = "Server=SUPORTE-06\\SQL2022;Database=PDV1;User ID=Sa;Password=IzzyWay1234";
+            string connectionString = "Server=DESKTOP-B1VUQ49;Database=PDV;User ID=Sa;Password=matheusSC12";
             string xmlconsulta = "SELECT XMLDocumentoAutorizado, Chave FROM Fiscal.Documento WHERE Inclusao BETWEEN '20240101' AND '20240131'";
 
             List<XML> XmlCont = new List<XML>();
@@ -31,26 +32,28 @@ namespace ExportarConsultaParaTxt
             reader = cmd.ExecuteReader();
             while (reader.Read())
             {
-                XML Xml = new XML();
-                Xml.Conteudo = (string)reader["XMLDocumentoAutorizado"] ?? "";
-                Xml.Chave = (string)reader["Chave"] ?? "";
+                XML XmlLista = new XML();
+                XmlLista.Conteudo = (string)reader["XMLDocumentoAutorizado"] ?? "";
+                XmlLista.Chave = (string)reader["Chave"] ?? "";
 
-                XmlCont.Add(Xml);
+                XmlCont.Add(XmlLista);
             }
             return XmlCont;
         }
-        public static void ArquivoCriar(List<XML> xml)
+        public static void ArquivoCriar(List<XML> XmlLista)
         {
-            foreach (XML xmlCont in xml)
+            foreach (XML xmlCont in XmlLista)
             {
-                var chaveArquivo = xml.ToList();
+                var chaveArquivo = xmlCont.Chave;
 
-                string nomeArquivo = $@"C:\IZZYWAY\teste\{chaveArquivo} .txt";
+                string nomeArquivo = $@"C:\BACKUP\{chaveArquivo}.txt";
 
                 using (StreamWriter writer = new StreamWriter(nomeArquivo, true))
                 {
-                    foreach (var registro in xml)
+                    foreach (var registro in XmlLista)
+                    {
                         writer.WriteLine($"{registro.Conteudo}");
+                    }
                 }
 
             }
