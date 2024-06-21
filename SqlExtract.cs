@@ -17,8 +17,8 @@ namespace ExportarConsultaParaTxt
 
         public static List<XML> SqlExtrair(List<string> args = null)
         {
-            //string connectionString = "Server=SUPORTE-06\\SQL2022;Database=PDV1;User ID=Sa;Password=IzzyWay1234";
-            string connectionString = "Server=DESKTOP-B1VUQ49;Database=PDV;User ID=Sa;Password=matheusSC12";
+            string connectionString = "Server=SUPORTE-06\\SQL2022;Database=PDV1;User ID=Sa;Password=IzzyWay1234";
+            //string connectionString = "Server=DESKTOP-B1VUQ49;Database=PDV;User ID=Sa;Password=matheusSC12";
             string xmlconsulta = "SELECT XMLDocumentoAutorizado, Chave FROM Fiscal.Documento WHERE Inclusao BETWEEN '20240101' AND '20240131'";
 
             List<XML> XmlCont = new List<XML>();
@@ -47,20 +47,19 @@ namespace ExportarConsultaParaTxt
             {
                 var conteudoArquivo = xmlCont.Conteudo;
                 var chaveArquivo = xmlCont.Chave;
-                foreach (var registro in XmlLista)
+
+                string nomeArquivo = $@"C:\BACKUP\TESTE\{chaveArquivo}.txt";
+                using (StreamWriter writer = new StreamWriter(nomeArquivo, true))
                 {
-                    string nomeArquivo = $@"C:\BACKUP\TESTE\{chaveArquivo}.txt";
-                    using (StreamWriter writer = new StreamWriter(nomeArquivo, true))
+                    for (int i = 0; i < conteudoArquivo.Length; i++)
                     {
-                        for (int i = 0; i < conteudoArquivo.Length; i++)
-                        {
-                            writer.WriteLine($"{conteudoArquivo[i]}");
-                        }
+                        writer.WriteLine($"{conteudoArquivo[i]}");
                     }
-
                 }
-            }
 
+            }
         }
+
     }
 }
+
