@@ -8,6 +8,7 @@ using System.Text;
 using System.Collections.Generic;
 using XmlEnv;
 using System.Linq;
+using Microsoft.Win32;
 
 namespace ExportarConsultaParaTxt
 {
@@ -44,21 +45,22 @@ namespace ExportarConsultaParaTxt
         {
             foreach (XML xmlCont in XmlLista)
             {
+                var conteudoArquivo = xmlCont.Conteudo;
                 var chaveArquivo = xmlCont.Chave;
-
-                string nomeArquivo = $@"C:\BACKUP\{chaveArquivo}.txt";
-
-                using (StreamWriter writer = new StreamWriter(nomeArquivo, true))
+                foreach (var registro in XmlLista)
                 {
-                    foreach (var registro in XmlLista)
+                    string nomeArquivo = $@"C:\BACKUP\TESTE\{chaveArquivo}.txt";
+                    using (StreamWriter writer = new StreamWriter(nomeArquivo, true))
                     {
-                        writer.WriteLine($"{registro.Conteudo}");
+                        for (int i = 0; i < conteudoArquivo.Length; i++)
+                        {
+                            writer.WriteLine($"{conteudoArquivo[i]}");
+                        }
                     }
+
                 }
-
             }
+
         }
-
-
     }
 }
