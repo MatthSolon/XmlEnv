@@ -14,12 +14,11 @@ namespace ExportarConsultaParaTxt
 {
     class SqlExtract
     {
-
         public static List<XML> SqlExtrair(List<string> args = null)
         {
             string connectionString = "Server=SUPORTE-06\\SQL2022;Database=PDV1;User ID=Sa;Password=IzzyWay1234";
             //string connectionString = "Server=DESKTOP-B1VUQ49;Database=PDV;User ID=Sa;Password=matheusSC12";
-            string xmlconsulta = "SELECT XMLDocumentoAutorizado, Chave FROM Fiscal.Documento WHERE Inclusao BETWEEN '20240101' AND '20240131'";
+            string xmlconsulta = "SELECT XMLDocumentoAutorizado, Chave FROM Fiscal.Documento WHERE Inclusao BETWEEN '20240101' AND '20240228'";
 
             List<XML> XmlCont = new List<XML>();
             XML XmlConteudo = new XML();
@@ -34,8 +33,15 @@ namespace ExportarConsultaParaTxt
             while (reader.Read())
             {
                 XML XmlLista = new XML();
-                XmlLista.Conteudo = (string)reader["XMLDocumentoAutorizado"] ?? "";
-                XmlLista.Chave = (string)reader["Chave"] ?? "";
+                if (reader["XMLDocumentoAutorizado"].ToString() != null && reader["Chave"].ToString() != null)
+                {
+                    XmlLista.Conteudo = reader["XMLDocumentoAutorizado"].ToString() ?? "";
+                    XmlLista.Chave = reader["Chave"].ToString() ?? "";
+                }
+                else
+                {
+                    continue;
+                }
 
                 XmlCont.Add(XmlLista);
             }
@@ -49,6 +55,7 @@ namespace ExportarConsultaParaTxt
                 var chaveArquivo = xmlCont.Chave;
 
                 string nomeArquivo = $@"C:\BACKUP\TESTE\{chaveArquivo}.txt";
+
                 using (StreamWriter writer = new StreamWriter(nomeArquivo, true))
                 {
                     for (int i = 0; i < conteudoArquivo.Length; i++)
@@ -58,7 +65,15 @@ namespace ExportarConsultaParaTxt
                 }
 
             }
+            List<XML> novaLista = new List<XML>();
+            var novosItens = XmlLista.Except(novaLista).ToList();
+            XmlLista.AddRange(novosItens);
+            //XmlLista.Intersect();
         }
+
+
+
+
 
     }
 }
