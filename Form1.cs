@@ -67,6 +67,8 @@ namespace XmlEnv
         private void enviarEmail_Click(object sender, EventArgs e)
         {
             
+            PastaXml.envioXml(localXml.Text, arquivoZip.Text, emailEnvio.Text);
+            
         }
     }
 }

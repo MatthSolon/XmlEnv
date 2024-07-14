@@ -30,7 +30,6 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.localizarXml = new System.Windows.Forms.Button();
-            this.checkXml = new System.IO.FileSystemWatcher();
             this.localXml = new System.Windows.Forms.TextBox();
             this.arquivoZip = new System.Windows.Forms.TextBox();
             this.emailEnvio = new System.Windows.Forms.TextBox();
@@ -40,7 +39,6 @@
             this.button3 = new System.Windows.Forms.Button();
             this.DatabaseForm = new System.Windows.Forms.Button();
             this.enviarEmail = new System.Windows.Forms.Button();
-            ((System.ComponentModel.ISupportInitialize)(this.checkXml)).BeginInit();
             this.SuspendLayout();
             // 
             // localizarXml
@@ -52,14 +50,6 @@
             this.localizarXml.Text = "Procurar";
             this.localizarXml.UseVisualStyleBackColor = true;
             this.localizarXml.Click += new System.EventHandler(this.localizarXml_Click);
-            // 
-            // checkXml
-            // 
-            this.checkXml.EnableRaisingEvents = true;
-            this.checkXml.Filter = "*.xml*";
-            this.checkXml.SynchronizingObject = this;
-            this.checkXml.Changed += new System.IO.FileSystemEventHandler(this.fileSystemWatcher1_Changed);
-            this.checkXml.Created += new System.IO.FileSystemEventHandler(this.checkXml_Created);
             // 
             // localXml
             // 
@@ -136,7 +126,7 @@
             // 
             this.enviarEmail.BackColor = System.Drawing.Color.Transparent;
             this.enviarEmail.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.enviarEmail.Location = new System.Drawing.Point(50, 197);
+            this.enviarEmail.Location = new System.Drawing.Point(50, 214);
             this.enviarEmail.Name = "enviarEmail";
             this.enviarEmail.Size = new System.Drawing.Size(211, 34);
             this.enviarEmail.TabIndex = 10;
@@ -162,7 +152,6 @@
             this.Controls.Add(this.localizarXml);
             this.Name = "Form1";
             this.Text = "Form1";
-            ((System.ComponentModel.ISupportInitialize)(this.checkXml)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -171,7 +160,6 @@
         #endregion
 
         private System.Windows.Forms.Button localizarXml;
-        private System.IO.FileSystemWatcher checkXml;
         private System.Windows.Forms.Button DatabaseForm;
         private System.Windows.Forms.Button button3;
         private System.Windows.Forms.Label label3;
