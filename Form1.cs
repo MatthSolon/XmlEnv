@@ -17,6 +17,7 @@ namespace XmlEnv
         public Form1()
         {
             InitializeComponent();
+            
         }
 
         private void localizarXml_Click(object sender, EventArgs e)
@@ -39,36 +40,51 @@ namespace XmlEnv
             }
         }
 
-        private void fileSystemWatcher1_Changed(object sender, System.IO.FileSystemEventArgs e)
-        {
-
-        }
-
-        private void checkXml_Created(object sender, System.IO.FileSystemEventArgs e)
-        {
-           
-        }
-
-        private void label1_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void textBox1_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void label3_Click(object sender, EventArgs e)
-        {
-
-        }
-
         private void enviarEmail_Click(object sender, EventArgs e)
         {
-            
+            backgroundWorker1.RunWorkerAsync();
+            cancelarOp.Enabled = true;
+        }
+
+        private void backgroundWorker1_DoWork(object sender, DoWorkEventArgs e)
+        {
+
             PastaXml.envioXml(localXml.Text, arquivoZip.Text, emailEnvio.Text);
-            
+            for (int i = 0; i < 100; i++)
+            {
+                System.Threading.Thread.Sleep(1000);
+                backgroundWorker1.ReportProgress(i);
+            }
+        }
+
+        private void backgroundWorker1_ProgressChanged(object sender, ProgressChangedEventArgs e)
+        {
+            progressBar1.Value = e.ProgressPercentage;
+        }
+
+        private void backgroundWorker1_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+        {
+            if (e.Error != null)
+            {
+                MessageBox.Show("erro no Processo");
+            }
+            else if (e.Cancelled)
+            {
+                MessageBox.Show("Processo Cancelado");
+            }
+            else
+            {
+                Console.WriteLine("concluido!");
+            }
+        }
+
+        private void cancelarOp_Click(object sender, EventArgs e)
+        {
+            if (backgroundWorker1.IsBusy)
+            {               
+                backgroundWorker1.CancelAsync();
+                cancelarOp.Enabled = false;
+            }
         }
     }
 }

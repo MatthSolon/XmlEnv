@@ -12,6 +12,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using static System.Net.WebRequestMethods;
 using File = System.IO.File;
+using System.ComponentModel;
 
 namespace XmlEnv
 {
@@ -82,7 +83,7 @@ namespace XmlEnv
 
                             
              ";
-
+            
             //compactar
             if (arquivoExiste == true)
             {
@@ -150,8 +151,8 @@ namespace XmlEnv
 
         }
 
-
-    }
+        
+        }
 
 
 
