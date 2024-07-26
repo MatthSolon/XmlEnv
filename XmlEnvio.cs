@@ -25,9 +25,9 @@ namespace XmlEnv
         public static void envioXml(string localPasta, string nomearquivo, string email)
         {
 
-            string host = "ftp://izzywaystorage.com.br";
-            string user = "u632943476.suporte";
-            string senha = "@IzzyWay2024";
+            string host = "";
+            string user = "";
+            string senha = "";
             string arquivoCompactado = $@"C:\Windows\Temp\{nomearquivo}.zip";
             bool arquivoExiste = File.Exists(arquivoCompactado);
             string destinoRemoto = $"/suporte/xml/{nomearquivo}.zip";
@@ -35,8 +35,8 @@ namespace XmlEnv
             string smtpAddress = "smtp.hostinger.com";
             int portNumber = 587;
             bool enableSSL = true;
-            string emailFrom = "matheus.solon@izzyway.com.br";
-            string password = "matheusSC12!";
+            string emailFrom = "";
+            string password = "";
             string emailTo = email;
             string subject = "Envio de XML";
             string body = $@"<!DOCTYPE html>
