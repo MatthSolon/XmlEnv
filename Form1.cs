@@ -7,6 +7,7 @@ using System.Drawing;
 using System.Linq;
 using System.Security;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -17,7 +18,8 @@ namespace XmlEnv
         public Form1()
         {
             InitializeComponent();
-            
+            backgroundWorker1.WorkerReportsProgress = true;
+            backgroundWorker1.WorkerSupportsCancellation = true;
         }
 
         private void localizarXml_Click(object sender, EventArgs e)
@@ -42,19 +44,34 @@ namespace XmlEnv
 
         private void enviarEmail_Click(object sender, EventArgs e)
         {
-            backgroundWorker1.RunWorkerAsync();
+
+            enviarEmail.Enabled = false;
             cancelarOp.Enabled = true;
+            backgroundWorker1.RunWorkerAsync();
+
         }
 
         private void backgroundWorker1_DoWork(object sender, DoWorkEventArgs e)
         {
 
-            PastaXml.envioXml(localXml.Text, arquivoZip.Text, emailEnvio.Text);
-            for (int i = 0; i < 100; i++)
+            
+            PastaXml.compactXml(localXml.Text, arquivoZip.Text);
+            
+            
+            PastaXml.envioFtp(arquivoZip.Text);
+            
+            
+            PastaXml.envioEmail(arquivoZip.Text, emailEnvio.Text);
+           
+            for (int i = 1; i <= 100; i++)
             {
-                System.Threading.Thread.Sleep(1000);
+               
+                Thread.Sleep(100);
+               
                 backgroundWorker1.ReportProgress(i);
             }
+
+
         }
 
         private void backgroundWorker1_ProgressChanged(object sender, ProgressChangedEventArgs e)
@@ -70,21 +87,25 @@ namespace XmlEnv
             }
             else if (e.Cancelled)
             {
+               
                 MessageBox.Show("Processo Cancelado");
             }
             else
             {
+                
                 Console.WriteLine("concluido!");
             }
         }
 
         private void cancelarOp_Click(object sender, EventArgs e)
         {
-            if (backgroundWorker1.IsBusy)
-            {               
-                backgroundWorker1.CancelAsync();
-                cancelarOp.Enabled = false;
-            }
+
+            backgroundWorker1.CancelAsync();
+
+            Thread.Sleep(1000);
+            cancelarOp.Enabled = false;
+            enviarEmail.Enabled = true;
+
         }
     }
 }
