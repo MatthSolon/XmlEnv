@@ -7,6 +7,7 @@ using System.Drawing;
 using System.Linq;
 using System.Security;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -43,18 +44,27 @@ namespace XmlEnv
         private void enviarEmail_Click(object sender, EventArgs e)
         {
             backgroundWorker1.RunWorkerAsync();
+            enviarEmail.Enabled = false;
             cancelarOp.Enabled = true;
         }
 
         private void backgroundWorker1_DoWork(object sender, DoWorkEventArgs e)
         {
-
-            PastaXml.envioXml(localXml.Text, arquivoZip.Text, emailEnvio.Text);
-            for (int i = 0; i < 100; i++)
+                     
+            for (int i = 0; i <100; i++)
             {
-                System.Threading.Thread.Sleep(1000);
-                backgroundWorker1.ReportProgress(i);
+                Task.Run(() =>
+                {
+                    this.Invoke(new Action(() =>
+                    {
+                        backgroundWorker1.ReportProgress(i);
+                        Thread.Sleep(200);
+                    }));
+                });
+                PastaXml.envioXml(localXml.Text, arquivoZip.Text, emailEnvio.Text);
             }
+            
+            e.Result = 0;
         }
 
         private void backgroundWorker1_ProgressChanged(object sender, ProgressChangedEventArgs e)
@@ -83,6 +93,7 @@ namespace XmlEnv
             if (backgroundWorker1.IsBusy)
             {               
                 backgroundWorker1.CancelAsync();
+                enviarEmail.Enabled = true;
                 cancelarOp.Enabled = false;
             }
         }
