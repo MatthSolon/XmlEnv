@@ -40,8 +40,8 @@
             this.DatabaseForm = new System.Windows.Forms.Button();
             this.enviarEmail = new System.Windows.Forms.Button();
             this.cancelarOp = new System.Windows.Forms.Button();
-            this.progressBar1 = new System.Windows.Forms.ProgressBar();
             this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
+            this.serviceController1 = new System.ServiceProcess.ServiceController();
             this.SuspendLayout();
             // 
             // localizarXml
@@ -141,21 +141,13 @@
             // 
             this.cancelarOp.Enabled = false;
             this.cancelarOp.Location = new System.Drawing.Point(347, 171);
-            this.cancelarOp.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.cancelarOp.Margin = new System.Windows.Forms.Padding(2);
             this.cancelarOp.Name = "cancelarOp";
             this.cancelarOp.Size = new System.Drawing.Size(130, 37);
             this.cancelarOp.TabIndex = 11;
             this.cancelarOp.Text = "cancelar";
             this.cancelarOp.UseVisualStyleBackColor = true;
             this.cancelarOp.Click += new System.EventHandler(this.cancelarOp_Click);
-            // 
-            // progressBar1
-            // 
-            this.progressBar1.Location = new System.Drawing.Point(9, 223);
-            this.progressBar1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
-            this.progressBar1.Name = "progressBar1";
-            this.progressBar1.Size = new System.Drawing.Size(469, 19);
-            this.progressBar1.TabIndex = 12;
             // 
             // backgroundWorker1
             // 
@@ -171,7 +163,6 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             this.ClientSize = new System.Drawing.Size(487, 260);
-            this.Controls.Add(this.progressBar1);
             this.Controls.Add(this.cancelarOp);
             this.Controls.Add(this.enviarEmail);
             this.Controls.Add(this.DatabaseForm);
@@ -205,8 +196,8 @@
         private System.Windows.Forms.TextBox localXml;
         private System.Windows.Forms.Button enviarEmail;
         private System.Windows.Forms.Button cancelarOp;
-        private System.Windows.Forms.ProgressBar progressBar1;
-        private System.ComponentModel.BackgroundWorker backgroundWorker1;
+        public System.ComponentModel.BackgroundWorker backgroundWorker1;
+        private System.ServiceProcess.ServiceController serviceController1;
     }
 }
 

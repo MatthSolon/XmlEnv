@@ -22,7 +22,7 @@ namespace XmlEnv
     class PastaXml
     {
 
-        public static void compactXml(string localPasta, string nomearquivo)
+        public static void compactXml(string localPasta, string nomearquivo, string email)
         {
             string arquivoCompactado = $@"C:\Windows\Temp\{nomearquivo}.zip";
             bool arquivoExiste = File.Exists(arquivoCompactado);
@@ -36,17 +36,17 @@ namespace XmlEnv
                 ZipFile.CreateFromDirectory(localPasta, arquivoCompactado);
             }
 
-        }
 
-        public static void envioFtp(string nomearquivo)
-        {
-            string host = "";
-            string user = "";
-            string senha = "";
-            string arquivoCompactado = $@"C:\Windows\Temp\{nomearquivo}.zip";
-            bool arquivoExiste = File.Exists(arquivoCompactado);
+
+            //public static void envioFtp(string nomearquivo)
+
+            string host = "ftp://izzywaystorage.com.br";
+            string user = "u632943476.suporte";
+            string senha = "@IzzyWay2024";
+          //  string arquivoCompactado = $@"C:\Windows\Temp\{nomearquivo}.zip";
+           // bool arquivoExiste = File.Exists(arquivoCompactado);
             string destinoRemoto = $"/suporte/xml/{nomearquivo}.zip";
-            
+
             try
             {
                 FtpWebRequest ftpAcesso = (FtpWebRequest)WebRequest.Create(host + destinoRemoto);
@@ -70,11 +70,11 @@ namespace XmlEnv
             {
                 MessageBox.Show($"Erro ao fazer upload: {ex.Message}");
             }
-            
-        }
-        public static void envioEmail(string nomearquivo, string email)
-        {
-            string destinoRemoto = $"/suporte/xml/{nomearquivo}.zip";
+
+
+            // public static void envioEmail(string nomearquivo, string email)
+
+           // string destinoRemoto = $"/suporte/xml/{nomearquivo}.zip";
             string linkXml = $"http://www.izzywaystorage.com.br/suporte/database{destinoRemoto}";
             string smtpAddress = "smtp.hostinger.com";
             int portNumber = 587;
@@ -153,6 +153,7 @@ namespace XmlEnv
                 MessageBox.Show("Exception caught in CreateTestMessage2(): {0}",
                     ex.ToString());
             }
+
 
         }
     }
