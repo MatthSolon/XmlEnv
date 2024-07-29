@@ -50,33 +50,30 @@ namespace XmlEnv
             backgroundWorker1.RunWorkerAsync();
 
         }
+        
 
-        private void backgroundWorker1_DoWork(object sender, DoWorkEventArgs e)
+        public void backgroundWorker1_DoWork(object sender, DoWorkEventArgs e)
         {
+            
+            
 
-            
-            PastaXml.compactXml(localXml.Text, arquivoZip.Text);
-            
-            
-            PastaXml.envioFtp(arquivoZip.Text);
-            
-            
-            PastaXml.envioEmail(arquivoZip.Text, emailEnvio.Text);
-           
-            for (int i = 1; i <= 100; i++)
-            {
-               
-                Thread.Sleep(100);
-               
-                backgroundWorker1.ReportProgress(i);
-            }
+                if (backgroundWorker1.CancellationPending)
+                {
+                    e.Cancel = true;
+                    
+                }
+
+                PastaXml.compactXml(localXml.Text, arquivoZip.Text, emailEnvio.Text);
+                
 
 
         }
 
+
         private void backgroundWorker1_ProgressChanged(object sender, ProgressChangedEventArgs e)
         {
-            progressBar1.Value = e.ProgressPercentage;
+
+           
         }
 
         private void backgroundWorker1_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
@@ -99,13 +96,23 @@ namespace XmlEnv
 
         private void cancelarOp_Click(object sender, EventArgs e)
         {
+            if (backgroundWorker1.WorkerSupportsCancellation == true)
+            {  
+                backgroundWorker1.CancelAsync();
+                Thread.Sleep(1000);
+                cancelarOp.Enabled = false;
+                enviarEmail.Enabled = true;
+                DialogResult dialog = new DialogResult();
 
-            backgroundWorker1.CancelAsync();
+                dialog = MessageBox.Show("operação cancelada, você deseja sair?", "Alert!", MessageBoxButtons.YesNo);
 
-            Thread.Sleep(1000);
-            cancelarOp.Enabled = false;
-            enviarEmail.Enabled = true;
+                if (dialog == DialogResult.Yes)
+                {
+                    Application.Exit();
+                }
 
+            }        
         }
+
     }
 }
