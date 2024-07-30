@@ -20,6 +20,8 @@ namespace XmlEnv
             InitializeComponent();
             backgroundWorker1.WorkerReportsProgress = true;
             backgroundWorker1.WorkerSupportsCancellation = true;
+            statusProcess.Text = "compactando...";
+
         }
 
         private void localizarXml_Click(object sender, EventArgs e)
@@ -44,75 +46,95 @@ namespace XmlEnv
 
         private void enviarEmail_Click(object sender, EventArgs e)
         {
-
             enviarEmail.Enabled = false;
             cancelarOp.Enabled = true;
+            statusProcess.Visible = true;
             backgroundWorker1.RunWorkerAsync();
+            progressBar1.Style = ProgressBarStyle.Marquee;
+            progressBar1.MarqueeAnimationSpeed = 3;
+            statusProcess.Text = "Processando...";
+
+
+
 
         }
-        
+
 
         public void backgroundWorker1_DoWork(object sender, DoWorkEventArgs e)
         {
-            
-            
 
-                if (backgroundWorker1.CancellationPending)
-                {
-                    e.Cancel = true;
-                    
-                }
+            if (backgroundWorker1.CancellationPending)
+            {
+                e.Cancel = true;
+            }
+            else
+            {
 
                 PastaXml.compactXml(localXml.Text, arquivoZip.Text, emailEnvio.Text);
-                
-
+            }
 
         }
 
 
-        private void backgroundWorker1_ProgressChanged(object sender, ProgressChangedEventArgs e)
-        {
-
-           
-        }
 
         private void backgroundWorker1_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
             if (e.Error != null)
             {
-                MessageBox.Show("erro no Processo");
+                progressBar1.MarqueeAnimationSpeed = 0;
+                progressBar1.Style = ProgressBarStyle.Blocks;
+                progressBar1.Value = 0;
+                statusProcess.Text = "Aconteceu um erro durante a execução do processo!";
             }
             else if (e.Cancelled)
             {
-               
-                MessageBox.Show("Processo Cancelado");
+                statusProcess.Text = "Operação Cancelada pelo Usuário!";
+                progressBar1.MarqueeAnimationSpeed = 0;
+                progressBar1.Style = ProgressBarStyle.Blocks;
+                progressBar1.Value = 0;
             }
             else
             {
-                
-                Console.WriteLine("concluido!");
+                progressBar1.MarqueeAnimationSpeed = 0;
+                progressBar1.Style = ProgressBarStyle.Blocks;
+                progressBar1.Value = 100;
+                enviarEmail.Enabled = true;
+                cancelarOp.Enabled = false;
+                statusProcess.Text = progressBar1.Value.ToString() + "%";
+                MessageBox.Show("Email enviado com sucesso!");
             }
         }
 
         private void cancelarOp_Click(object sender, EventArgs e)
         {
             if (backgroundWorker1.WorkerSupportsCancellation == true)
-            {  
+            {
                 backgroundWorker1.CancelAsync();
-                Thread.Sleep(1000);
+                Thread.Sleep(500);
                 cancelarOp.Enabled = false;
                 enviarEmail.Enabled = true;
                 DialogResult dialog = new DialogResult();
-
+                statusProcess.Text = "Cancelando...";
+                
                 dialog = MessageBox.Show("operação cancelada, você deseja sair?", "Alert!", MessageBoxButtons.YesNo);
 
                 if (dialog == DialogResult.Yes)
                 {
                     Application.Exit();
                 }
-
-            }        
+                else
+                {
+                    statusProcess.Text = "Cancelado";
+                    Thread.Sleep(1000);
+                    statusProcess.Visible = false;
+                    progressBar1.MarqueeAnimationSpeed = 0;
+                    progressBar1.Style = ProgressBarStyle.Blocks;
+                    progressBar1.Value = 0;
+                }
+                
+            }
         }
+
 
     }
 }

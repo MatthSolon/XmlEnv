@@ -24,63 +24,17 @@ namespace XmlEnv
 
         public static void compactXml(string localPasta, string nomearquivo, string email)
         {
-            string arquivoCompactado = $@"C:\Windows\Temp\{nomearquivo}.zip";
-            bool arquivoExiste = File.Exists(arquivoCompactado);
-            if (arquivoExiste == true)
-            {
-                File.Delete(arquivoCompactado);
-                ZipFile.CreateFromDirectory(localPasta, arquivoCompactado);
-            }
-            else
-            {
-                ZipFile.CreateFromDirectory(localPasta, arquivoCompactado);
-            }
-
-
-
-            //public static void envioFtp(string nomearquivo)
-
-            string host = "ftp://izzywaystorage.com.br";
             string user = "u632943476.suporte";
             string senha = "@IzzyWay2024";
-          //  string arquivoCompactado = $@"C:\Windows\Temp\{nomearquivo}.zip";
-           // bool arquivoExiste = File.Exists(arquivoCompactado);
             string destinoRemoto = $"/suporte/xml/{nomearquivo}.zip";
-
-            try
-            {
-                FtpWebRequest ftpAcesso = (FtpWebRequest)WebRequest.Create(host + destinoRemoto);
-                ftpAcesso.Method = WebRequestMethods.Ftp.UploadFile;
-                ftpAcesso.Credentials = new NetworkCredential(user, senha);
-
-
-                using (Stream stream = ftpAcesso.GetRequestStream())
-                {
-                    byte[] conteudoArquivo = File.ReadAllBytes(arquivoCompactado);
-                    stream.Write(conteudoArquivo, 0, conteudoArquivo.Length);
-
-                }
-
-                FtpWebResponse response = (FtpWebResponse)ftpAcesso.GetResponse();
-                Console.WriteLine($"Upload concluído. Status: {response.StatusDescription}");
-                response.Close();
-                File.Delete(arquivoCompactado);
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"Erro ao fazer upload: {ex.Message}");
-            }
-
-
-            // public static void envioEmail(string nomearquivo, string email)
-
-           // string destinoRemoto = $"/suporte/xml/{nomearquivo}.zip";
+            string arquivoCompactado = $@"C:\Windows\Temp\{nomearquivo}.zip";
+            bool arquivoExiste = File.Exists(arquivoCompactado);
             string linkXml = $"http://www.izzywaystorage.com.br/suporte/database{destinoRemoto}";
             string smtpAddress = "smtp.hostinger.com";
             int portNumber = 587;
             bool enableSSL = true;
-            string emailFrom = "";
-            string password = "";
+            string emailFrom = "matheus.solon@izzyway.com.br";
+            string password = "matheusSC12!";
             string emailTo = email;
             string subject = "Envio de XML";
             string body = $@"<!DOCTYPE html>
@@ -127,6 +81,42 @@ namespace XmlEnv
 
                             
              ";
+            string host = "ftp://izzywaystorage.com.br";
+           
+
+            if (arquivoExiste == true)
+            {
+                File.Delete(arquivoCompactado);
+                ZipFile.CreateFromDirectory(localPasta, arquivoCompactado);
+            }
+            else
+            {
+                ZipFile.CreateFromDirectory(localPasta, arquivoCompactado);
+            }
+ 
+            try
+            {
+                FtpWebRequest ftpAcesso = (FtpWebRequest)WebRequest.Create(host + destinoRemoto);
+                ftpAcesso.Method = WebRequestMethods.Ftp.UploadFile;
+                ftpAcesso.Credentials = new NetworkCredential(user, senha);
+
+
+                using (Stream stream = ftpAcesso.GetRequestStream())
+                {
+                    byte[] conteudoArquivo = File.ReadAllBytes(arquivoCompactado);
+                    stream.Write(conteudoArquivo, 0, conteudoArquivo.Length);
+
+                }
+
+                FtpWebResponse response = (FtpWebResponse)ftpAcesso.GetResponse();
+                Console.WriteLine($"Upload concluído. Status: {response.StatusDescription}");
+                response.Close();
+                File.Delete(arquivoCompactado);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Erro ao fazer upload: {ex.Message}");
+            }
 
             try
             {
@@ -144,17 +134,13 @@ namespace XmlEnv
                         smtp.EnableSsl = enableSSL;
                         smtp.Send(mail);
                     }
-                }
-
-                MessageBox.Show("Email enviado com sucesso!");
+                }              
             }
             catch (Exception ex)
             {
                 MessageBox.Show("Exception caught in CreateTestMessage2(): {0}",
                     ex.ToString());
             }
-
-
         }
     }
 }
