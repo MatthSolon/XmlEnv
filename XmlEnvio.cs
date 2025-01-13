@@ -22,13 +22,13 @@ namespace XmlEnv
     class PastaXml
     {
 
-        public static void compactXml(string localPasta, string nomearquivo, string email)
+        public static void compactXml(string localPasta, string email)
         {
             string htmlFilePath = @"C:\Users\mathe\source\repos\XmlEnv\HTMLPage1.html";
             string user = "u632943476.suporte";
             string senha = "@IzzyWay2024";
-            string destinoRemoto = $"/suporte/xml/{nomearquivo}.zip";
-            string arquivoCompactado = $@"C:\Windows\Temp\{nomearquivo}.zip";
+            string destinoRemoto = $"/suporte/xml/{{Estabelecimento}}.zip";
+            string arquivoCompactado = $@"C:\Windows\Temp\{{Estabelecimento}}.zip";
             bool arquivoExiste = File.Exists(arquivoCompactado);
             string linkXml = $"http://www.izzywaystorage.com.br/suporte/database{destinoRemoto}";
             string smtpAddress = "smtp.hostinger.com";
@@ -39,8 +39,7 @@ namespace XmlEnv
             string emailTo = email;
             string subject = "XML loja: {Estabelecimento} – {nomeDispositivo} ref.: {mês}/{ano}";
             string body = File.ReadAllText(htmlFilePath);
-            string host = "ftp://izzywaystorage.com.br";
-           
+            string host = "ftp.izzywaystorage.com.br";
 
             if (arquivoExiste == true)
             {
