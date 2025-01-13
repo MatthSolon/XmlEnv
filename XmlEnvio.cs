@@ -26,7 +26,7 @@ namespace XmlEnv
         {
             string htmlFilePath = @"C:\Users\mathe\source\repos\XmlEnv\HTMLPage1.html";
             string user = "u632943476.suporte";
-            string senha = "@IzzyWay2024";
+            string senha = "IzzyWay@1234";
             string destinoRemoto = $"/suporte/xml/{{Estabelecimento}}.zip";
             string arquivoCompactado = $@"C:\Windows\Temp\{{Estabelecimento}}.zip";
             bool arquivoExiste = File.Exists(arquivoCompactado);
