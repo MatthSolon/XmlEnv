@@ -70,7 +70,7 @@ namespace XmlEnv
             else
             {
 
-                PastaXml.compactXml(localXml.Text, emailEnvio.Text);
+                PastaXml.XmlEvio(localXml.Text, emailEnvio.Text);
             }
 
         }
