@@ -16,7 +16,7 @@ namespace ExportarConsultaParaTxt
     {
         public static List<XML> SqlExtrair(List<string> args = null)
         {
-            string connectionString = "Server=SUPORTE-06\\SQL2022;Database=PDV1;User ID=Sa;Password=IzzyWay1234";
+            string connectionString = "Server=SQL2022;Database=Database;User ID=Sa;Password=1234";
             //string connectionString = "Server=DESKTOP-B1VUQ49;Database=PDV;User ID=Sa;Password=matheusSC12";
             string xmlconsulta = "SELECT XMLDocumentoAutorizado, Chave FROM Fiscal.Documento WHERE Inclusao BETWEEN '20240101' AND '20240228'";
 
